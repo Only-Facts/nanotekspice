@@ -21,13 +21,14 @@ ComponentFactory::ComponentFactory() {
   _builders["and"] = []() { return std::make_unique<GateComponent>(Operators::ntsAnd); };
   _builders["or"] = []() { return std::make_unique<GateComponent>(Operators::ntsOr); };
   _builders["xor"] = []() { return std::make_unique<GateComponent>(Operators::ntsXor); };
+  _builders["not"] = []() { return std::make_unique<GateComponent>(Operators::ntsNot, SINGLE_OUTPUT); };
 
   _builders["4001"] = []() { return std::make_unique<C4001>(); };
   _builders["4071"] = []() { return std::make_unique<C4071>(); };
   _builders["4081"] = []() { return std::make_unique<C4081>(); };
 }
 
-std::unique_ptr<nts::IComponent> ComponentFactory::createComponent(const std::string &type) {
+std::unique_ptr<IComponent> ComponentFactory::createComponent(const std::string &type) {
   if (!_builders.contains(type))
     throw NTSError("Unknown component type: " + type);
   return _builders[type]();

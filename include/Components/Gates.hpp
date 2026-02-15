@@ -7,6 +7,8 @@
 
 #ifndef GATES
   #define GATES
+  #define DEFAULT_OUTPUT 3
+  #define SINGLE_OUTPUT 2
   #include "AComponent.hpp"
   #include "IComponent.hpp"
   #include <functional>
@@ -14,18 +16,21 @@
 namespace nts {
 class GateComponent: public AComponent {
 public:
-  using LogicOp = std::function<nts::Tristate(nts::Tristate, nts::Tristate)>;
+  using LogicOp = std::function<Tristate(Tristate, Tristate)>;
 
-  GateComponent(LogicOp op) : _op(std::move(op)) {}
+  GateComponent(LogicOp op, std::size_t outputPin = DEFAULT_OUTPUT) : _op(std::move(op)), _outputPin(outputPin) {}
   virtual ~GateComponent() = default;
 
-  nts::Tristate compute(std::size_t pin) override {
-    if (pin != 3) return getPinValue(pin);
+  Tristate compute(std::size_t pin) override {
+    if (pin != _outputPin) return Undefined;
 
     if (_cache.contains(pin) && _cache[pin].first == _currentTick)
       return _cache[pin].second;
 
-    nts::Tristate res = _op(getPinValue(1), getPinValue(2));
+    Tristate v1 = getPinValue(1);
+    Tristate v2 = (_outputPin == SINGLE_OUTPUT) ? Undefined : getPinValue(2);
+
+    Tristate res = _op(v1, v2);
     _cache[pin] = { _currentTick, res };
     return res;
   }
@@ -33,25 +38,31 @@ public:
   void simulate(std::size_t tick) override { _currentTick = tick; }
 
 private:
-  std::function<nts::Tristate(nts::Tristate, nts::Tristate)> _op;
+  std::function<Tristate(Tristate, Tristate)> _op;
+  std::size_t _outputPin;
 };
 
 struct Operators {
-  static nts::Tristate ntsAnd(nts::Tristate a, nts::Tristate b) {
+  static Tristate ntsAnd(Tristate a, Tristate b) {
     if (a == False || b == False) return False;
     if (a == True && b == True) return True;
     return Undefined;
   }
-  static nts::Tristate ntsOr(nts::Tristate a, nts::Tristate b) {
+  static Tristate ntsOr(Tristate a, Tristate b) {
     if (a == True || b == True) return True;
     if (a == False || b == False) return False;
     return Undefined;
   }
-  static nts::Tristate ntsXor(nts::Tristate a, nts::Tristate b) {
+  static Tristate ntsXor(Tristate a, Tristate b) {
     if (a == Undefined || b == Undefined) return Undefined;
     return (a == b) ? False : True;
   }
-  static nts::Tristate ntsNor(nts::Tristate a, nts::Tristate b) {
+  static Tristate ntsNot(Tristate a, Tristate b) {
+    (void)b;
+    if (a == Undefined) return Undefined;
+    return a == True ? False : True;
+  }
+  static Tristate ntsNor(Tristate a, Tristate b) {
     if (a == Undefined || b == Undefined) return Undefined;
     return (a == False && b == False) ? True : False;
   }
