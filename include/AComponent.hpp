@@ -14,16 +14,16 @@ namespace nts {
 class AComponent: public IComponent {
 protected:
   struct Link {
-    nts::IComponent *component;
+    IComponent *component;
     std::size_t pin;
   };
   std::map<std::size_t, Link> _links;
 
-  std::map<std::size_t, std::pair<std::size_t, nts::Tristate>> _cache;
+  std::map<std::size_t, std::pair<std::size_t, Tristate>> _cache;
   std::size_t _currentTick;
 
-  nts::Tristate getPinValue(std::size_t pin) {
-    if (!_links.contains(pin)) return nts::Undefined;
+  Tristate getPinValue(std::size_t pin) {
+    if (!_links.contains(pin) || _links[pin].component == nullptr) return Undefined;
     return _links[pin].component->compute(_links[pin].pin);
   }
 
@@ -36,7 +36,7 @@ public:
   AComponent(AComponent&&) noexcept = default;
   AComponent& operator=(AComponent&&) noexcept = default;
 
-  void setLink(std::size_t pin, nts::IComponent& other, std::size_t otherPin) override {
+  void setLink(std::size_t pin, IComponent& other, std::size_t otherPin) override {
     _links[pin] = {&other, otherPin};
   }
 };

@@ -25,7 +25,7 @@ public:
     for (std::unique_ptr<IComponent> &gate : _subGates) gate->simulate(tick);
   }
 
-  void setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin) override {
+  void setLink(std::size_t pin, IComponent &other, std::size_t otherPin) override {
     switch (pin) {
       case 1:
         _subGates[0]->setLink(1, other, otherPin);
@@ -54,7 +54,7 @@ public:
     }
   }
 
-  nts::Tristate compute(std::size_t pin) override {
+  Tristate compute(std::size_t pin) override {
     switch (pin) {
       case 3:
         return _subGates[0]->compute(3);

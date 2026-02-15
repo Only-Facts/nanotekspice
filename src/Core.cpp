@@ -46,15 +46,15 @@ void Core::display() const {
 
   std::cout << "input(s):" << std::endl;
   for (auto const& [name, comp] : _inputs) {
-    nts::Tristate val = comp->compute(1);
-    std::string s = (val == nts::Undefined) ? "U" : std::to_string(val);
+    Tristate val = comp->compute(1);
+    std::string s = (val == Undefined) ? "U" : std::to_string(val);
     std::cout << " " << name << ": " << s << std::endl;
   }
 
   std::cout << "output(s):" << std::endl;
   for (auto const& [name, comp] : _outputs) {
-    nts::Tristate val = comp->compute(1);
-    std::string strVal = (val == nts::Undefined) ? "U" : std::to_string(val);
+    Tristate val = comp->compute(1);
+    std::string strVal = (val == Undefined) ? "U" : std::to_string(val);
     std::cout << " " << name << ": " << strVal << std::endl;
   }
 }
@@ -69,7 +69,7 @@ void Core::loop() {
   std::signal(SIGINT, SIG_DFL);
 }
 
-void Core::setInputValue(const std::string &name, nts::Tristate value) {
+void Core::setInputValue(const std::string &name, Tristate value) {
   if (!_inputs.contains(name))
     throw NTSError("Unknown input: " + name);
 
@@ -90,9 +90,9 @@ void Core::run() {
     if (pos != std::string::npos) {
       std::string name = line.substr(0, pos);
       std::string valStr = line.substr(pos + 1);
-      if (valStr == "0") setInputValue(name, nts::False);
-      else if (valStr == "1") setInputValue(name, nts::True);
-      else if (valStr == "U") setInputValue(name, nts::Undefined);
+      if (valStr == "0") setInputValue(name, False);
+      else if (valStr == "1") setInputValue(name, True);
+      else if (valStr == "U") setInputValue(name, Undefined);
     }
     std::cout << "> ";
   }

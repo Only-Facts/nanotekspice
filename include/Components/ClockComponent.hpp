@@ -17,16 +17,17 @@ public:
     if (tick <= _currentTick) return;
     _currentTick = tick;
 
-    if (_nextValue != nts::Undefined) {
+    if (_nextValue != Undefined) {
       _value = _nextValue;
-      _nextValue = nts::Undefined;
+      _nextValue = Undefined;
     } else {
-      if (_value == nts::True) _value = nts::False;
-      else if (_value == nts::False) _value = nts::True;
+      if (_value == True) _value = False;
+      else if (_value == False) _value = True;
     }
   }
 
   nts::Tristate compute(std::size_t pin) override {
+    if (pin != 1) return Undefined;
     return _value;
   }
 };

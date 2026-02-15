@@ -22,7 +22,7 @@ public:
   Parser(const Parser&) = delete;
   Parser& operator=(const Parser&) = delete;
 
-  std::map<std::string, std::unique_ptr<nts::IComponent>> parseFile(const std::string &filepath);
+  std::map<std::string, std::unique_ptr<IComponent>> parseFile(const std::string &filepath);
 
 private:
   void parseLine(const std::string &line);
@@ -39,7 +39,7 @@ private:
   Section _currentSection = Section::NONE;
 
   ComponentFactory _factory;
-  std::map<std::string, std::unique_ptr<nts::IComponent>> _components;
+  std::map<std::string, std::unique_ptr<IComponent>> _components;
 };
 }
 

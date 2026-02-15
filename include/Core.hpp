@@ -36,13 +36,13 @@ private:
   void simulate();
   void display() const;
   void loop();
-  void setInputValue(const std::string &name, nts::Tristate value);
+  void setInputValue(const std::string &name, Tristate value);
 
   std::size_t _tick;
-  std::map<std::string, std::unique_ptr<nts::IComponent>> _components;
+  std::map<std::string, std::unique_ptr<IComponent>> _components;
 
-  std::map<std::string, nts::IComponent*> _inputs;
-  std::map<std::string, nts::IComponent*> _outputs;
+  std::map<std::string, IComponent*> _inputs;
+  std::map<std::string, IComponent*> _outputs;
 
   static std::atomic<bool> _stopLoop;
   static void signalHandler(int signum);

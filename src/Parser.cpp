@@ -7,7 +7,7 @@
 namespace nts {
 Parser::Parser() : _currentSection(Section::NONE) {}
 
-std::map<std::string, std::unique_ptr<nts::IComponent>> Parser::parseFile(const std::string &filepath) {
+std::map<std::string, std::unique_ptr<IComponent>> Parser::parseFile(const std::string &filepath) {
   std::ifstream file(filepath);
   if (!file.is_open())
     throw NTSError("Could not open file: " + filepath);

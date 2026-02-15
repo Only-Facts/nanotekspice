@@ -13,7 +13,7 @@
 namespace nts {
 class InputComponent: public AComponent {
 public:
-  InputComponent() : _nextValue(nts::Undefined), _value(nts::Undefined) {}
+  InputComponent() : _nextValue(Undefined), _value(Undefined) {}
 
   void simulate(std::size_t tick) override {
     if (tick <= _currentTick) return;
@@ -21,13 +21,13 @@ public:
     _value = _nextValue;
   }
 
-  nts::Tristate compute(std::size_t pin) override { return _value; }
+  Tristate compute(std::size_t pin) override { return _value; }
 
-  void setValue(nts::Tristate val) { _nextValue = val; }
+  void setValue(Tristate val) { _nextValue = val; }
 
 protected:
-  nts::Tristate _nextValue;
-  nts::Tristate _value;
+  Tristate _nextValue;
+  Tristate _value;
 };
 }
 

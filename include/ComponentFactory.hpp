@@ -16,10 +16,10 @@ namespace nts {
 class ComponentFactory {
 public:
   ComponentFactory();
-  std::unique_ptr<nts::IComponent> createComponent(const std::string &type);
+  std::unique_ptr<IComponent> createComponent(const std::string &type);
 
 private:
-  std::map<std::string, std::function<std::unique_ptr<nts::IComponent>()>> _builders;
+  std::map<std::string, std::function<std::unique_ptr<IComponent>()>> _builders;
 };
 }
 
