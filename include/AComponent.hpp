@@ -12,13 +12,20 @@
 
 namespace nts {
 class AComponent: public IComponent {
-
 protected:
   struct Link {
     nts::IComponent *component;
     std::size_t pin;
   };
   std::map<std::size_t, Link> _links;
+
+  std::map<std::size_t, std::pair<std::size_t, nts::Tristate>> _cache;
+  std::size_t _currentTick;
+
+  nts::Tristate getPinValue(std::size_t pin) {
+    if (!_links.contains(pin)) return nts::Undefined;
+    return _links[pin].component->compute(_links[pin].pin);
+  }
 
 public:
   AComponent() = default;
