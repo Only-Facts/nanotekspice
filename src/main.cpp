@@ -1,11 +1,11 @@
 #include <iostream>
 #include "Core.hpp"
+#include "Errors.hpp"
 
-static unsigned int handle_args(int argc, const char *argv[])
-{
+static unsigned int handle_args(int argc, const char *argv[]) {
   if (argc == 1)
     return SUCCESS;
-  if (argc > 2 || !argv || !argv[1])
+  if (argc > 3 || !argv || !argv[1])
     return FAIL;
   std::string flag(argv[1]);
   if (flag == "--help" || flag == "-h") {
@@ -25,6 +25,13 @@ int main(int argc, const char *argv[]) {
     case FAIL:
       return FAIL;
     default:
-      return SUCCESS;
+      try {
+        return SUCCESS;
+      } catch (const NTSError &err) {
+        std::cerr << err.what() << std::endl;
+        return ERROR;
+      } catch (...) {
+        std::cerr << "Uncaught Error." << std::endl;
+      }
   }
 }
