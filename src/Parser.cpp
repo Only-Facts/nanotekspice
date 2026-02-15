@@ -13,15 +13,18 @@ std::map<std::string, std::unique_ptr<nts::IComponent>> Parser::parseFile(const 
     throw NTSError("Could not open file: " + filepath);
 
   std::string line;
+  _currentSection = Section::NONE;
+  _components.clear();
+
   while (std::getline(file, line)) {
     line = line.substr(0, line.find('#'));
     line = trim(line);
     if (line.empty()) continue;
 
-    if (line == ".chispets:") {
+    if (line.find(".chipsets:") == 0) {
       _currentSection = Section::CHIPSETS;
       continue;
-    } else if (line == ".links:") {
+    } else if (line.find(".links:") == 0) {
       _currentSection = Section::LINKS;
       continue;
     }
@@ -33,24 +36,20 @@ std::map<std::string, std::unique_ptr<nts::IComponent>> Parser::parseFile(const 
 }
 
 void Parser::processChipset(const std::string &line) {
-  std::regex pattern(R"(^([^\s]+)\s+([^\s]+)$)");
-  std::smatch matches;
+  std::stringstream ss(line);
+  std::string type, name;
 
-  if (std::regex_match(line, matches, pattern)) {
-    std::string type = matches[1];
-    std::string name = matches[2];
+  if (!(ss >> type >> name))
+    throw NTSError("Invalid chipset syntax: " + line);
 
-    if (_components.contains(name))
-      throw NTSError("Component already exists: " + name);
+  if (_components.contains(name))
+    throw NTSError("Component name already exists: " + name);
 
-    _components[name] = _factory.createComponent(type);
-  } else {
-    throw NTSError("Invalid syntax in .chipsets: " + line);
-  }
+  _components[name] = _factory.createComponent(type);
 }
 
 void Parser::processLink(const std::string &line) {
-  std::regex pattern(R"(^([^\s]+):(\d+)\s+([^\s]+):(\d+)$)");
+  std::regex pattern(R"(^([^:\s]+)\s*:\s*(\d+)\s+([^:\s]+)\s*:\s*(\d+)$)");
   std::smatch matches;
 
   if (std::regex_match(line, matches, pattern)) {
@@ -59,8 +58,10 @@ void Parser::processLink(const std::string &line) {
     std::string comp2 = matches[3];
     std::size_t pin2 = std::stoul(matches[4]);
 
-    if (!_components.contains(comp1) || !_components.contains(comp2))
-      throw NTSError("Link to non-existent component");
+    if (!_components.contains(comp1))
+      throw NTSError("Link error: Component '" + comp1 + "' does not exist.");
+    if (!_components.contains(comp2))
+      throw NTSError("Link error: Component '" + comp2 + "' does not exist.");
 
     _components[comp1]->setLink(pin1, *_components[comp2], pin2);
     _components[comp2]->setLink(pin2, *_components[comp1], pin1);
@@ -70,9 +71,12 @@ void Parser::processLink(const std::string &line) {
 }
 
 std::string Parser::trim(const std::string &str) const {
-  std::size_t first = str.find_first_not_of(" \t\r\n");
+  const std::string whitespace = " \t\r\n";
+
+  std::size_t first = str.find_first_not_of(whitespace);
   if (first == std::string::npos) return "";
-  std::size_t last = str.find_last_not_of(" \t\r\n");
+
+  std::size_t last = str.find_last_not_of(whitespace);
   return str.substr(first, (last - first + 1));
 }
 }
