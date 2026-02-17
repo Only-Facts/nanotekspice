@@ -53,7 +53,7 @@ jobs:
       - name: Check Compilation
         run: |
           for binary in ${{ env.EXECUTABLES }}; do
-            if [ ! -x "$binary" ]; then
+            if [ ! -x "$binary" || ! -x "build/$binary" ]; then
               echo "::error::File $binary does not exist or is not executable"
               echo "check_compilation=false" >> $GITHUB_OUTPUT
               exit 1
