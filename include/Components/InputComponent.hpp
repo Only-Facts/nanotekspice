@@ -23,7 +23,7 @@ public:
 
   Tristate compute(std::size_t) override { return _value; }
 
-  void setValue(Tristate val) { _nextValue = val; }
+  virtual void setValue(Tristate val) { _nextValue = val; }
 
 protected:
   Tristate _nextValue;
