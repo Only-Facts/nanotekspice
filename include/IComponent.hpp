@@ -25,4 +25,6 @@ class IComponent {
 };
 }
 
+nts::Tristate operator!(const nts::Tristate a);
+
 #endif /* ICOMPONENT */
