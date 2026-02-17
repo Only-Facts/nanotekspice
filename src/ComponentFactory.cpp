@@ -1,5 +1,6 @@
 #include "IComponent.hpp"
 #include "ComponentFactory.hpp"
+#include "Components/Constants.hpp"
 #include "Components/ClockComponent.hpp"
 #include "Components/InputComponent.hpp"
 #include "Components/OutputComponent.hpp"
@@ -15,8 +16,8 @@ ComponentFactory::ComponentFactory() {
   _builders["input"] = []() { return std::make_unique<InputComponent>(); };
   _builders["output"] = []() { return std::make_unique<OutputComponent>(); };
   _builders["clock"] = []() { return std::make_unique<ClockComponent>(); };
-  _builders["true"] = []() { return std::make_unique<InputComponent>(); };
-  _builders["false"] = []() { return std::make_unique<InputComponent>(); };
+  _builders["true"] = []() { return std::make_unique<ConstantComponent>(Tristate::True); };
+  _builders["false"] = []() { return std::make_unique<ConstantComponent>(Tristate::False); };
 
   _builders["and"] = []() { return std::make_unique<GateComponent>(Operators::ntsAnd); };
   _builders["or"] = []() { return std::make_unique<GateComponent>(Operators::ntsOr); };
