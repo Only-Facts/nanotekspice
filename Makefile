@@ -12,6 +12,7 @@ SRC_DIR	=	src/
 SRC_FILES	=	main.cpp	\
 						ComponentFactory.cpp	\
 						Core.cpp	\
+						IComponent.cpp	\
 						Parser.cpp
 
 SRC	=	$(addprefix $(SRC_DIR), $(SRC_FILES))
