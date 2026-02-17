@@ -41,10 +41,14 @@ jobs:
           repository: ""
 
       - name: Compile Repo
-        run: make
-
-      - name: Clean Repo
-        run: make clean
+        run: |
+          if [ -f "CMakeLists.txt" ]; then
+            mkdir build && cd build
+            cmake ..
+            make
+          else
+            make && make clean
+          fi
 
       - name: Check Compilation
         run: |
