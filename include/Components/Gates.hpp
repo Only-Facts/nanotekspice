@@ -44,20 +44,17 @@ private:
 
 struct Operators {
   static Tristate ntsAnd(Tristate a, Tristate b) {
-    if (a == Undefined || b == Undefined) return Undefined;
-    return (a == True && b == True) ? True : False;
+    return static_cast<nts::Tristate>(a && b);
   }
   static Tristate ntsOr(Tristate a, Tristate b) {
-    if (a == Undefined || b == Undefined) return Undefined;
-    return (a == True || b == True) ? True : False;
+    return static_cast<nts::Tristate>(a || b);
   }
   static Tristate ntsXor(Tristate a, Tristate b) {
     if (a == Undefined || b == Undefined) return Undefined;
     return (a == b) ? False : True;
   }
   static Tristate ntsNot(Tristate a, Tristate) {
-    if (a == Undefined) return Undefined;
-    return a == True ? False : True;
+    return static_cast<nts::Tristate>(!a);
   }
   static Tristate ntsNor(Tristate a, Tristate b) {
     if (a == Undefined || b == Undefined) return Undefined;
