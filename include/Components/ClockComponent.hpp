@@ -8,7 +8,8 @@
 #ifndef CLOCKCOMPONENT
   #define CLOCKCOMPONENT
   #include "IComponent.hpp"
-#include "InputComponent.hpp"
+  #include "InputComponent.hpp"
+#include <atomic>
 
 namespace nts {
 class ClockComponent: public InputComponent {
@@ -17,19 +18,24 @@ public:
     if (tick <= _currentTick) return;
     _currentTick = tick;
 
-    if (_nextValue != Undefined) {
-      _value = _nextValue;
-      _nextValue = Undefined;
-    } else {
-      if (_value == True) _value = False;
-      else if (_value == False) _value = True;
-    }
+    _value = _updateValue ? _nextValue : _value;
+    _updateValue = false;
+    if (_value == True || _value == False) _value = static_cast<Tristate>(!_value);
+    else _value = Undefined;
   }
 
-  nts::Tristate compute(std::size_t pin) override {
+  Tristate compute(std::size_t pin) override {
     if (pin != 1) return Undefined;
     return _value;
   }
+
+  void setValue(Tristate val) override {
+    _nextValue = static_cast<Tristate>(!val);
+    _updateValue = true;
+  }
+
+private:
+  std::atomic<bool> _updateValue{false};
 };
 }
 
