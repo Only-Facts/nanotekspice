@@ -8,6 +8,9 @@
 #include "Components/C4001.hpp"
 #include "Components/C4071.hpp"
 #include "Components/C4081.hpp"
+#include "Components/C4011.hpp"
+#include "Components/C4030.hpp"
+#include "Components/C4069.hpp"
 #include "Errors.hpp"
 #include <memory>
 
@@ -27,6 +30,9 @@ ComponentFactory::ComponentFactory() {
   _builders["4001"] = []() { return std::make_unique<C4001>(); };
   _builders["4071"] = []() { return std::make_unique<C4071>(); };
   _builders["4081"] = []() { return std::make_unique<C4081>(); };
+  _builders["4011"] = []() { return std::make_unique<C4011>(); };
+  _builders["4030"] = []() { return std::make_unique<C4030>(); };
+  _builders["4069"] = []() { return std::make_unique<C4069>(); };
 }
 
 std::unique_ptr<IComponent> ComponentFactory::createComponent(const std::string &type) {
