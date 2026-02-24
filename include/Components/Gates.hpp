@@ -60,6 +60,9 @@ struct Operators {
     if (a == Undefined || b == Undefined) return Undefined;
     return (a == False && b == False) ? True : False;
   }
+  static Tristate ntsNand(Tristate a, Tristate b) {
+    return static_cast<nts::Tristate>(!(a && b));
+  }
 };
 }
 
