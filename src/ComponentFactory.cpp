@@ -49,7 +49,6 @@ ComponentFactory::ComponentFactory() {
   _builders["4094"] = []() { return std::make_unique<C4094>(); };
   _builders["4512"] = []() { return std::make_unique<C4512>(); };
   _builders["4514"] = []() { return std::make_unique<C4514>(); };
-  _builders["4801"] = []() { return std::make_unique<C4801>(); };
 }
 
 std::unique_ptr<IComponent> ComponentFactory::createComponent(const std::string &type) {
