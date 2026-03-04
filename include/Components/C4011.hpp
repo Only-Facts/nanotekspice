@@ -74,5 +74,4 @@ private:
   std::vector<std::unique_ptr<IComponent>> _subGates;
 };
 }
-
 #endif
