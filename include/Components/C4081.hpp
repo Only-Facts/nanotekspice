@@ -74,4 +74,4 @@ private:
 };
 }
 
-#endif /* COMPONENT4081 */
+#endif
