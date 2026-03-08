@@ -13,7 +13,7 @@
 namespace nts {
 class C4013: public AComponent {
 public:
-  C4013() = default;
+  C4013() : AComponent("C4013") {}
   ~C4013() override = default;
 
   void simulate(std::size_t tick) override {
@@ -24,7 +24,7 @@ public:
     simulateFF(1);
   }
 
-  Tristate compute(std::size_t pin) override {
+  Tristate runLogic(std::size_t pin) override {
     switch (pin) {
       case 1:
         return _q[0];

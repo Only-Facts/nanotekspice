@@ -12,11 +12,12 @@
   #include <array>
   #include <cstdint>
   #include <fstream>
+#include <string>
 
 namespace nts {
 class C2716 : public AComponent {
 public:
-  C2716() {
+  C2716() : AComponent("C2716") {
     for (auto &b : rom) b = 0;
     std::ifstream in("./rom.bin", std::ios::binary);
     if (!in) return;
@@ -29,7 +30,7 @@ public:
     _currentTick = tick;
   }
 
-  Tristate compute(std::size_t pin) override {
+  Tristate runLogic(std::size_t pin) override {
     int bit = dIndex(pin);
     if (bit < 0) return Undefined;
     if (getPinValue(19) != False) return Undefined;

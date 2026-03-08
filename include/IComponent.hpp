@@ -8,6 +8,7 @@
 #ifndef ICOMPONENT
   #define ICOMPONENT
   #include <cstddef>
+  #include <string>
 
 namespace nts {
 enum Tristate {
@@ -22,6 +23,8 @@ class IComponent {
     virtual void simulate(std::size_t tick) = 0;
     virtual Tristate compute(std::size_t pin) = 0;
     virtual void setLink(std::size_t pin, IComponent& other, std::size_t otherPin) = 0;
+    virtual Tristate runLogic(std::size_t pin) = 0;
+    virtual std::string getType() const = 0;
 };
 }
 

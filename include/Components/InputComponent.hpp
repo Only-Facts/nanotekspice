@@ -7,23 +7,25 @@
 
 #ifndef INPUTCOMPONENT
   #define INPUTCOMPONENT
-  #include "IComponent.hpp"
   #include "AComponent.hpp"
 
 namespace nts {
 class InputComponent: public AComponent {
 public:
-  InputComponent() : _nextValue(Undefined), _value(Undefined) {}
+  InputComponent() : AComponent("input"), _nextValue(Undefined), _value(Undefined) {}
+  virtual ~InputComponent() = default;
+
+  void setValue(Tristate v) { _nextValue = v; }
 
   void simulate(std::size_t tick) override {
-    if (tick <= _currentTick) return;
-    _currentTick = tick;
+    AComponent::simulate(tick);
     _value = _nextValue;
   }
 
-  Tristate compute(std::size_t) override { return _value; }
-
-  virtual void setValue(Tristate val) { _nextValue = val; }
+  Tristate runLogic(std::size_t pin) override { 
+    if (pin != 1) return Undefined;
+    return _value;
+  }
 
 protected:
   Tristate _nextValue;

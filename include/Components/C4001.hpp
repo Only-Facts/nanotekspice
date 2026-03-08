@@ -16,9 +16,9 @@
 namespace nts {
 class C4001: public AComponent {
 public:
-  C4001() {
+  C4001() : AComponent("C4001") {
     for (int i = 0; i < 4; ++i)
-      _subGates.push_back(std::make_unique<GateComponent>(Operators::ntsNor));
+      _subGates.push_back(std::make_unique<GateComponent>("nor", Operators::ntsNor));
   }
 
   void simulate(std::size_t tick) override {
@@ -54,7 +54,7 @@ public:
     }
   }
 
-  Tristate compute(std::size_t pin) override {
+  Tristate runLogic(std::size_t pin) override {
     switch (pin) {
       case 3:
         return _subGates[0]->compute(3);

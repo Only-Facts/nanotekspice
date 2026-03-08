@@ -16,22 +16,22 @@
 namespace nts {
 class C4008: public AComponent {
 public:
-  C4008() = default;
+  C4008() : AComponent("C4008") {}
   ~C4008() override = default;
 
   void simulate(std::size_t tick) override { _currentTick = tick ;}
 
-  Tristate compute(std::size_t pin) override {
+  Tristate runLogic(std::size_t pin) override {
     switch (pin) {
-      case 3:
+      case 10:
         return sumBit(0);
-      case 6:
+      case 11:
         return sumBit(1);
       case 12:
         return sumBit(2);
-      case 9:
+      case 13:
         return sumBit(3);
-      case 8:
+      case 14:
         return carryOut();
       default:
         return Undefined;
@@ -40,6 +40,10 @@ public:
 
 private:
   std::vector<std::unique_ptr<IComponent>> _subGates;
+
+  static Tristate force0(Tristate v) {
+    return (v == Undefined) ? False : v;
+  }
 
   static Tristate xor3(Tristate a, Tristate b, Tristate c) {
     return Operators::ntsXor(Operators::ntsXor(a, b), c);
@@ -50,9 +54,9 @@ private:
     return Operators::ntsOr(Operators::ntsAnd(a, b), Operators::ntsAnd(cin, axb));
   }
 
-  Tristate getA(int i) { return getPinValue(aPins[i]); }
-  Tristate getB(int i) { return getPinValue(bPins[i]); }
-  Tristate getC(){ return getPinValue(15); }
+  Tristate getA(int i) { return force0(getPinValue(aPins[i])); }
+  Tristate getB(int i) { return force0(getPinValue(bPins[i])); }
+  Tristate getC(){ return getPinValue(9); }
 
   Tristate sumBit(int i) {
     Tristate c = getC();

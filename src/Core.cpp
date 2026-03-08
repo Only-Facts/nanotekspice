@@ -46,9 +46,11 @@ void Core::display() const {
 
   std::cout << "input(s):" << std::endl;
   for (auto const& [name, comp] : _inputs) {
-    Tristate val = comp->compute(1);
-    std::string s = (val == Undefined) ? "U" : std::to_string(val);
-    std::cout << "  " << name << ": " << s << std::endl;
+    std::string type = comp->getType();
+    if (type == "input" || type == "clock") {
+      Tristate val = comp->compute(1);
+      std::cout << "  " << name << ": " << (val == Undefined ? "U" : std::to_string(val)) << std::endl;
+    }
   }
 
   std::cout << "output(s):" << std::endl;

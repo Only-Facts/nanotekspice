@@ -13,7 +13,7 @@
 namespace nts {
 class C4017 : public AComponent {
 public:
-  C4017() = default;
+  C4017() : AComponent("C4017") {}
   ~C4017() override = default;
 
   void simulate(std::size_t tick) override {
@@ -43,7 +43,7 @@ public:
     _lastClk = clk;
   }
 
-  Tristate compute(std::size_t pin) override {
+  Tristate runLogic(std::size_t pin) override {
     if (_state < 0) {
       if (isQPin(pin) || pin == 12)
         return Undefined;

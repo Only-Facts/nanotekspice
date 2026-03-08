@@ -13,7 +13,7 @@
 namespace nts {
 class C4040 : public AComponent {
 public:
-  C4040() = default;
+  C4040() : AComponent("C4040") {}
   ~C4040() override = default;
 
   void simulate(std::size_t tick) override {
@@ -35,7 +35,7 @@ public:
     _lastClk = clk;
   }
 
-  Tristate compute(std::size_t pin) override {
+  Tristate runLogic(std::size_t pin) override {
     int bit = bitFromPin(pin);
     if (bit == -1) return Undefined;
     if (_value < 0) return Undefined;

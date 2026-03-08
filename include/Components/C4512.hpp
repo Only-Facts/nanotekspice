@@ -13,7 +13,7 @@
 namespace nts {
 class C4512 : public AComponent {
 public:
-  C4512() = default;
+  C4512() : AComponent("C4512") {}
   ~C4512() override = default;
 
   void simulate(std::size_t tick) override
@@ -21,7 +21,7 @@ public:
     _currentTick = tick;
   }
 
-  Tristate compute(std::size_t pin) override {
+  Tristate runLogic(std::size_t pin) override {
     if (pin != 14)
       return Undefined;
     const Tristate disable = getPinValue(15);

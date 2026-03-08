@@ -8,14 +8,14 @@
 #ifndef LOGGER
   #define LOGGER
   #include "AComponent.hpp"
-#include "IComponent.hpp"
   #include <cstdint>
   #include <fstream>
+  #include <string>
 
 namespace nts {
 class Logger : public AComponent {
 public:
-  Logger() = default;
+  Logger() : AComponent("logger") {}
   ~Logger() override = default;
 
   void simulate(std::size_t tick) override {
@@ -32,7 +32,7 @@ public:
     _lastClk = clk;
   }
 
-  Tristate compute(std::size_t) override {
+  Tristate runLogic(std::size_t) override {
     return Undefined;
   }
 

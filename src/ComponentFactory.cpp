@@ -33,10 +33,11 @@ ComponentFactory::ComponentFactory() {
   _builders["true"] = []() { return std::make_unique<ConstantComponent>(Tristate::True); };
   _builders["false"] = []() { return std::make_unique<ConstantComponent>(Tristate::False); };
 
-  _builders["and"] = []() { return std::make_unique<GateComponent>(Operators::ntsAnd); };
-  _builders["or"] = []() { return std::make_unique<GateComponent>(Operators::ntsOr); };
-  _builders["xor"] = []() { return std::make_unique<GateComponent>(Operators::ntsXor); };
-  _builders["not"] = []() { return std::make_unique<GateComponent>(Operators::ntsNot, SINGLE_OUTPUT); };
+  _builders["and"] = []() { return std::make_unique<GateComponent>("and", Operators::ntsAnd); };
+  _builders["or"] = []() { return std::make_unique<GateComponent>("or", Operators::ntsOr); };
+  _builders["xor"] = []() { return std::make_unique<GateComponent>("xor", Operators::ntsXor); };
+  _builders["not"] = []() { return std::make_unique<GateComponent>("not", Operators::ntsNot, SINGLE_OUTPUT); };
+  _builders["nor"] = []() { return std::make_unique<GateComponent>("nor", Operators::ntsNor); };
 
   _builders["4001"] = []() { return std::make_unique<C4001>(); };
   _builders["4071"] = []() { return std::make_unique<C4071>(); };
@@ -51,7 +52,8 @@ ComponentFactory::ComponentFactory() {
   _builders["4094"] = []() { return std::make_unique<C4094>(); };
   _builders["4512"] = []() { return std::make_unique<C4512>(); };
   _builders["4801"] = []() { return std::make_unique<C4801>(); };
-  _builders["4514"] = []() { return std::make_unique<C2716>(); };
+  _builders["4514"] = []() { return std::make_unique<C4514>(); };
+  _builders["2716"] = []() { return std::make_unique<C2716>(); };
 
   _builders["logger"] = []() { return std::make_unique<Logger>(); };
 }

@@ -7,13 +7,13 @@ nts::Tristate operator!(const nts::Tristate a) {
 }
 
 nts::Tristate operator&&(const nts::Tristate a, const nts::Tristate b) {
-  if (a == nts::Undefined || b == nts::Undefined)
-    return nts::Undefined;
-  return a == nts::True && b == nts::True ? nts::True : nts::False;
+  if (a == nts::False || b == nts::False) return nts::False;
+  if (a == nts::True && b == nts::True) return nts::True;
+  return nts::Undefined;
 }
 
 nts::Tristate operator||(const nts::Tristate a, const nts::Tristate b) {
-  if (a == nts::Undefined || b == nts::Undefined)
-    return nts::Undefined;
-  return a == nts::True || b == nts::True ? nts::True : nts::False;
+  if (a == nts::True || b == nts::True) return nts::True;
+  if (a == nts::False && b == nts::False) return nts::False;
+  return nts::Undefined;
 }

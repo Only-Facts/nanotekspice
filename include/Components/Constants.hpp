@@ -15,7 +15,7 @@ class ConstantComponent: public InputComponent {
 public:
   ConstantComponent(Tristate val) : _value(val) {}
   void simulate(std::size_t tick) override { (void)tick; }
-  nts::Tristate compute(std::size_t) override { return _value; }
+  nts::Tristate runLogic(std::size_t) override { return _value; }
 
 protected:
   Tristate _value;

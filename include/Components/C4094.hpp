@@ -13,7 +13,7 @@
 namespace nts {
 class C4094 : public AComponent {
 public:
-  C4094() = default;
+  C4094() : AComponent("C4094") {}
   ~C4094() override = default;
 
   void simulate(std::size_t tick) override {
@@ -34,7 +34,7 @@ public:
     _lastStb = stb;
   }
 
-  Tristate compute(std::size_t pin) override {
+  Tristate runLogic(std::size_t pin) override {
     if (pin == 9)  return _shift[7];
     if (pin == 10) return invert(_shift[7]);
     Tristate oe = getPinValue(15);

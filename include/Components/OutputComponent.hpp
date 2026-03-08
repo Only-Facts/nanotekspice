@@ -7,14 +7,17 @@
 
 #ifndef OUTPUTCOMPONENT
   #define OUTPUTCOMPONENT
-  #include "IComponent.hpp"
   #include "AComponent.hpp"
+#include "IComponent.hpp"
+  #include <string>
 
 namespace nts {
 class OutputComponent: public AComponent {
 public:
-  void simulate(std::size_t tick) override { (void)tick; }
-  Tristate compute(std::size_t) override {
+  OutputComponent() : AComponent("output") {}
+
+  Tristate runLogic(std::size_t pin) override {
+    if (pin != 1) return Undefined;
     return getPinValue(1);
   }
 };

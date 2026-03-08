@@ -7,34 +7,25 @@
 
 #ifndef CLOCKCOMPONENT
   #define CLOCKCOMPONENT
-  #include "IComponent.hpp"
-  #include "InputComponent.hpp"
+  #include "Components/InputComponent.hpp"
 
 namespace nts {
 class ClockComponent: public InputComponent {
 public:
+  ClockComponent() : InputComponent() {
+    _type = "clock";
+  }
+
   void simulate(std::size_t tick) override {
-    if (tick <= _currentTick) return;
-    _currentTick = tick;
+    Tristate old = _value;
 
-    _value = _updateValue ? _nextValue : _value;
-    _updateValue = false;
-    if (_value == True || _value == False) _value = static_cast<Tristate>(!_value);
-    else _value = Undefined;
+    InputComponent::simulate(tick);
+
+    if (_value == old && tick > 0) {
+      if (_value == True) _value = False;
+      else if (_value == False) _value = True;
+    }
   }
-
-  Tristate compute(std::size_t pin) override {
-    if (pin != 1) return Undefined;
-    return _value;
-  }
-
-  void setValue(Tristate val) override {
-    _nextValue = static_cast<Tristate>(!val);
-    _updateValue = true;
-  }
-
-private:
-  bool _updateValue{false};
 };
 }
 
