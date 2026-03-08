@@ -32,19 +32,19 @@ public :
           _subGates[0]->setLink(1, other, otherPin);
           break;
         case 3:
-          _subGates[0]->setLink(1, other, otherPin);
+          _subGates[1]->setLink(1, other, otherPin);
           break;
         case 5:
-          _subGates[1]->setLink(1, other, otherPin);
-          break;
-        case 9:
-          _subGates[1]->setLink(1, other, otherPin);
-          break;
-        case 11:
           _subGates[2]->setLink(1, other, otherPin);
           break;
-        case 13:
+        case 9:
           _subGates[3]->setLink(1, other, otherPin);
+          break;
+        case 11:
+          _subGates[4]->setLink(1, other, otherPin);
+          break;
+        case 13:
+          _subGates[5]->setLink(1, other, otherPin);
           break;
       }
   }
