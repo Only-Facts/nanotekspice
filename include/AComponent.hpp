@@ -22,7 +22,7 @@ protected:
   std::map<std::size_t, Link> _links;
 
   std::map<std::size_t, std::pair<std::size_t, Tristate>> _cache;
-  std::size_t _currentTick;
+  std::size_t _currentTick = 0;
 
   std::string _type;
 
